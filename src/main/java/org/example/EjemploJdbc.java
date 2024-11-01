@@ -10,16 +10,17 @@ public class EjemploJdbc {
         String username = "root";
         String contrasena = "1234";
 
-        try {
-            Connection conn = DriverManager.getConnection(url,username,contrasena);
+        try(Connection conn = DriverManager.getConnection(url,username,contrasena);
             Statement stmt = conn.createStatement();
-            ResultSet  resultado = stmt.executeQuery("SELECT * FROM productos");
+            ResultSet resultado = stmt.executeQuery("SELECT * FROM productos"))
+            {
             while (resultado.next()){
-                System.out.println(resultado.getString("nombre"));
+                System.out.print(resultado.getString("nombre")+", ");
+                System.out.print(resultado.getInt("id")+", ");
+                System.out.print(resultado.getInt("precio")+",");
+                System.out.println(resultado.getDate("fecha_registro"));
             }
-            resultado.close();
-            stmt.close();
-            conn.close();
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
