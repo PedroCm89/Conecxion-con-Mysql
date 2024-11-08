@@ -1,26 +1,25 @@
 package org.example;
 
+import org.example.util.DataBaseConnection;
+
 import java.sql.*;
 
 public class EjemploJdbc {
 
     public static void main(String[] args) {
 
-        String url = "jdbc:mysql://localhost:3306/java_curso";
-        String username = "root";
-        String contrasena = "1234";
 
-        try(Connection conn = DriverManager.getConnection(url,username,contrasena);
+
+        try(Connection conn = DataBaseConnection.getIntace();
             Statement stmt = conn.createStatement();
             ResultSet resultado = stmt.executeQuery("SELECT * FROM productos"))
             {
             while (resultado.next()){
-                System.out.print(resultado.getString("nombre")+", ");
-                System.out.print(resultado.getInt("id")+", ");
-                System.out.print(resultado.getInt("precio")+",");
-                System.out.println(resultado.getDate("fecha_registro"));
+                System.out.print(STR."\{resultado.getString("nombre")}, ");
+                System.out.print(STR."\{resultado.getInt("id")}, ");
+                System.out.print(STR."\{resultado.getInt("precio")},");
+                System.out.println(STR."\{resultado.getDate("fecha_registro")}");
             }
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
