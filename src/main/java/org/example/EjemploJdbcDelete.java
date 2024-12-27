@@ -5,10 +5,10 @@ import org.example.util.models.Product;
 import org.example.util.repository.ProductRepository;
 import org.example.util.repository.Repository;
 
-import java.sql.*;
-import java.util.Date;
+import java.sql.Connection;
+import java.sql.SQLException;
 
-public class EjemploJdbc {
+public class EjemploJdbcDelete {
 
     public static void main(String[] args) {
 
@@ -23,13 +23,11 @@ public class EjemploJdbc {
             System.out.println("=====================obtener por id========================");
             System.out.println(repo.forId(1L).toString());
 
-            System.out.println("=====================insertar nuevo producto========================");
-            Product product = new Product();
-            product.setName("Teclado mecanico");
-            product.setPrice(500);
-            product.setRegistrationDate(new Date());
-            repo.save(product);
-            System.out.println("producto guardado con exito");
+            System.out.println("=====================editar producto========================");
+
+            repo.delete(9L);
+
+            System.out.println("producto eliminado con exito");
             repo.findAll().forEach(System.out::println);
 
 
