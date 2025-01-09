@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.util.DataBaseConnection;
+import org.example.util.models.Categorie;
 import org.example.util.models.Product;
 import org.example.util.repository.ProductRepository;
 import org.example.util.repository.Repository;
@@ -25,12 +26,16 @@ public class EjemploJdbc {
 
             System.out.println("=====================insertar nuevo producto========================");
             Product product = new Product();
-            product.setName("Teclado mecanico");
-            product.setPrice(500);
-            product.setRegistrationDate(new Date());
+            product.setName("Dron");
+            product.setPrice(1000);
+            product.setCategorie(new Categorie(2L));
+            product.setDateRegistration(new Date());
             repo.save(product);
             System.out.println("producto guardado con exito");
             repo.findAll().forEach(System.out::println);
+
+
+
 
 
 

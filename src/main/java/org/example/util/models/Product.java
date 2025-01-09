@@ -9,6 +9,7 @@ public class Product {
     private Integer price;
 
     private Date  DateRegistration;
+    private Categorie categorie;
 
     public Product() {
     }
@@ -48,12 +49,20 @@ public class Product {
         return DateRegistration;
     }
 
-    public void setRegistrationDate(Date registrationDate) {
-        this.DateRegistration = registrationDate;
+    public void setDateRegistration(Date dateRegistration) {
+        this.DateRegistration = dateRegistration;
+    }
+
+    public Categorie getCategorie() {
+        return categorie;
+    }
+
+    public void setCategorie(Categorie categorie) {
+        this.categorie = categorie;
     }
 
     @Override
     public String toString() {
-        return  id +" | "+ name + " | " + price+" | " + DateRegistration ;
+        return STR."\{id} | \{name} | \{price} | \{DateRegistration} | \{categorie.getName()} ";
     }
 }

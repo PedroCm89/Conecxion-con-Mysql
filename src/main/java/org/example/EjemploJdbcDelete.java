@@ -25,7 +25,8 @@ public class EjemploJdbcDelete {
 
             System.out.println("=====================editar producto========================");
 
-            repo.delete(9L);
+            repo.delete(18L);
+            repo.delete(19L);
 
             System.out.println("producto eliminado con exito");
             repo.findAll().forEach(System.out::println);

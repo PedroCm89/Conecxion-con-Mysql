@@ -1,6 +1,7 @@
 package org.example.util.repository;
 
 import org.example.util.DataBaseConnection;
+import org.example.util.models.Categorie;
 import org.example.util.models.Product;
 
 import java.sql.*;
@@ -17,7 +18,8 @@ public class ProductRepository  implements Repository<Product>{
     public List<Product> findAll() {
         List<Product>products= new ArrayList<>();
         try(Statement stmt = getConnection().createStatement();
-            ResultSet result = stmt.executeQuery("SELECT * FROM products")) {
+            ResultSet result = stmt.executeQuery("SELECT p.*, c.name as categorie FROM products " +
+                    "as p inner join categories as c on (p.category_id = c.id)")) {
             while (result.next()){
                 Product p = CreateProduct(result);
                 products.add(p);
@@ -34,7 +36,7 @@ public class ProductRepository  implements Repository<Product>{
         Product product = null;
 
         try(PreparedStatement stm = getConnection()
-                .prepareStatement("SELECT * FROM products WHERE id =?")){
+                .prepareStatement("SELECT p.*, c.name as categorie FROM products as p inner join categories as c on (p.category_id = c.id) WHERE p.id =?")){
             stm.setLong(1,id);
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
@@ -51,18 +53,19 @@ public class ProductRepository  implements Repository<Product>{
     public void save(Product product) {
         String sql = null;
         if (product.getId() !=null && product.getId()>0) {
-            sql = "UPDATE products SET name=?, price=? WHERE id=? ";
+            sql = "UPDATE products SET name=?, price=?, category_id=? WHERE id=? ";
         }else{
-            sql = "INSERT INTO products(name, price, date_registration) VALUES(?,?,?)";
+            sql = "INSERT INTO products(name, price, category_id, date_registration) VALUES(?,?,?,?)";
         }
         try(PreparedStatement stmt= getConnection().prepareStatement(sql)) {
             stmt.setString(1, product.getName());
             stmt.setLong(2,product.getPrice());
+            stmt.setLong(3, product.getCategorie().getId());
 
             if (product.getId() !=null && product.getId()>0) {
-               stmt.setLong(3, product.getId());
+               stmt.setLong(4, product.getId());
             } else {
-                stmt.setDate(3, new Date(product.getDateRegistration().getTime()));
+                stmt.setDate(4, new Date(product.getDateRegistration().getTime()));
             }
 
             stmt.executeUpdate();
@@ -87,6 +90,10 @@ public class ProductRepository  implements Repository<Product>{
                 result.getString("name"),
                 result.getInt("price"),
                 result.getDate("date_registration"));
+        Categorie categorie = new Categorie();
+            categorie.setId(result.getLong("category_id"));
+            categorie.setName(result.getString("categorie"));
+        p.setCategorie(categorie);
         return p;
     }
 }
